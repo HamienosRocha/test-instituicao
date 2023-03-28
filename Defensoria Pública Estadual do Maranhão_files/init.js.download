@@ -1,0 +1,547 @@
+var browser = window.navigator.userAgent.match(/Firefox\/([0-9]+)\./);
+var versao = browser ? parseInt(browser[1]) : 0;
+/* Submenus > Desktop */
+LimpaSelecaoMenu = function(){
+    $('.dropdown-bt-sistemas').removeClass('bt-selecionado');
+    $('.dropdown-bt-servicos').removeClass('bt-selecionado');
+    $('.dropdown-bt-midias').removeClass('bt-selecionado');
+    $('.dropdown-bt-defensoria').removeClass('bt-selecionado');
+}
+MarcaMenu = function(classe){
+    $('.'+classe).addClass('bt-selecionado');
+}
+$(document).on('click','.dropdown-bt-defensoria',function(){
+    if($('.dropdown-bt-defensoria').hasClass('bt-selecionado')){
+        LimpaSelecaoMenu();
+    } else {
+        LimpaSelecaoMenu();
+        MarcaMenu('dropdown-bt-defensoria');
+    }
+});
+$(document).on('click','.dropdown-bt-sistemas',function(){
+    if($('.dropdown-bt-sistemas').hasClass('bt-selecionado')){
+        LimpaSelecaoMenu();
+    } else {
+        LimpaSelecaoMenu();
+        MarcaMenu('dropdown-bt-sistemas');
+    }       
+});
+$(document).on('click','.dropdown-bt-servicos',function(){
+    if($('.dropdown-bt-servicos').hasClass('bt-selecionado')){
+        LimpaSelecaoMenu();
+    } else {
+        LimpaSelecaoMenu();
+        MarcaMenu('dropdown-bt-servicos');
+    }      
+});
+$(document).on('click','.dropdown-bt-midias',function(){
+    if($('.dropdown-bt-midias').hasClass('bt-selecionado')){
+        LimpaSelecaoMenu();
+    } else {
+        LimpaSelecaoMenu();
+        MarcaMenu('dropdown-bt-midias');
+    }           
+});
+$(window).on('click',function(e){
+    if(!$('.dropdown-bt-midias').hasClass('active') 
+       && !$('.dropdown-bt-defensoria').hasClass('active')
+       && !$('.dropdown-bt-sistemas').hasClass('active')
+       && !$('.dropdown-bt-servicos').hasClass('active')){
+        LimpaSelecaoMenu();
+    }
+});
+$(window).on('load', function () {
+    var hash = window.location.hash;
+    if(hash == '#prevencao'){
+        $('#item13').trigger('click');
+    }
+    $('#galeria-videos .previa-texto').ellipsis({ lines: 3 });
+    $('#galeria-fotos .previa-texto').ellipsis({ lines: 3 });
+    // Fix navegador dpema
+    if (versao === 41) {
+        $('.previa-texto').ellipsis({ lines: 3 });
+        $('.text-ellipses-overflow').ellipsis({ lines: 3 });
+        $('.descricao-noticia-recente .text-ellipses-title').ellipsis({ lines: 2 });
+
+        if ($('.thumb-efeito').is(':visible')) {
+            $('.thumb-efeito img').removeClass('thumb-noticias');
+        }
+
+        if ($('.fotos').is(':visible')) {
+            $('.fotos a').removeClass('link-galeria');
+        }
+    }
+
+    //Scroll > Relatórios
+    if($('#relatorios').is(':visible')){
+        var hash = window.location.hash;
+        if(hash == '#relatorios'){
+            $('html, body').animate({ scrollTop: 90000 }, 1000);
+        }
+    }
+    $('.dropdown-bt-sistemas').dropdown({
+        coverTrigger: false
+    });
+    $('.dropdown-bt-servicos').dropdown({
+        coverTrigger: false,
+    });
+    $('.dropdown-bt-midias').dropdown({
+        coverTrigger: false,
+    });
+    $('.dropdown-bt-defensoria').dropdown({
+        coverTrigger: false,
+    });
+    /* Menu > Mobile */
+    $('.collapsible').collapsible();
+
+    
+
+    // Form Consulta
+    $("#solicitacao-cpf_cpnj").on('click', function () {
+        $(".span-prefixo").css('color', '#064474');
+    });
+    $("#solicitacao-cpf_cpnj").focusout(function () {
+        $(".span-prefixo").css('color', '#000');
+    });
+    setTimeout(function(){
+        $.LoadingOverlay("hide");
+    }, 120);
+
+    // while(removeWhiteSpace());
+});
+
+function removeWhiteSpace() {
+    var lastParagraphTag = $('.texto-noticia-page p:last-child');
+
+    if(lastParagraphTag.html() === '&nbsp;') {
+        lastParagraphTag.remove();
+        return true;
+    };
+
+    return false;
+}
+
+//Scroll > Menu
+$(window).scroll(function () {
+    var Scroll = $(window).scrollTop() + 1,
+        posicao = 10;
+    if (Scroll >= posicao) {
+        $('#logo-defensoria').fadeOut(300);
+        $('nav').css('position', 'sticky');
+        $('nav').css('top', 0);
+        $('nav').css('z-index', 1001);
+        $('#logo-sticky').fadeIn(300);
+        $('#logo-sticky').removeClass('hide');
+    } else {
+        $('#logo-defensoria').fadeIn(300);
+        $('nav').removeAttr('position');
+        $('#logo-sticky').addClass('hide');
+        $('#logo-sticky').fadeOut(300);
+    }
+    $('.stickyAudioPlayerBox').css('position', 'fixed');
+    $('.stickyAudioPlayerBox').css('bottom', 0);
+    
+    if($(document).scrollTop() === 0) {
+        $('#back-top').hide();
+        $('.whatsapp-icon').css('bottom', '15px');
+	} else {
+        $('#back-top').show().css('visibility', 'visible');;
+        $('.whatsapp-icon').css('bottom', '75px');
+    }
+});
+$(document).on('click', '.collapsible-header', function () {
+    if (!$(this).find('.fa-chevron-down:first').hasClass('bt_seta')) {
+        $(this).find('.fa-chevron-down:first').css('-webkit-transform', 'rotate(180deg)');
+        $(this).find('.fa-chevron-down:first').css('transition', 'transform .3s ease-in-out;');
+        $(this).find('.fa-chevron-down:first').addClass('bt_seta');
+    } else {
+        $(this).find('.fa-chevron-down:first').css('-webkit-transform', 'rotate(360deg)');
+        $(this).find('.fa-chevron-down:first').css('padding-left', '4px');
+        $(this).find('.fa-chevron-down:first').css('transition', 'transform .3s ease-in-out;');
+        $(this).find('.fa-chevron-down:first').removeClass('bt_seta');
+    }
+});
+$(document).ready(function () {
+    $.LoadingOverlay("show");
+    $('#back-top').click(function(){
+		$('html, body').animate({scrollTop:0}, 'slow');
+		return false;
+	});
+
+    $('.sidenav').sideNav({
+        menuWidth: 270,
+        draggable: false,
+        onOpen: function(){
+            $('.enabled').hide();
+        },
+        onClose: function(){
+            $('.enabled').show();
+        }
+    });
+    $('.modal').modal({
+        ready: function () {
+            $('.enabled').hide();
+            $('body').append(`<div class="fechar"><i class="material-icons">close</i></div>`);
+        },
+        dismissible: false
+    });
+    Materialize.updateTextFields();
+    $('a.pdfviewer').click(function () {
+        if($('.nav-mobile').is(':visible')){
+            $('.sidenav').sideNav('hide');
+        }
+        var url = $(this).attr('href');
+        event.preventDefault();
+        $.fancybox.open({
+            beforeLoad: function(){
+                $('.enabled').hide();
+            },
+            afterClose: function(){
+                $('.enabled').show();
+            },
+            src: 'https://docs.google.com/viewer?url=' + url + '&embedded=true',
+            type: 'iframe'
+        });
+    });
+    $('a.pageviewer').click(function () {
+        if($('.nav-mobile').is(':visible')){
+            $('.sidenav').sideNav('hide');
+        }
+        var url = $(this).attr('href');
+        event.preventDefault();
+        $.fancybox.open({
+            beforeLoad: function(){
+                $('.enabled').hide();
+            },
+            afterClose: function(){
+                $('.enabled').show();
+            },
+            src: url,
+            type: 'iframe',
+            iframe : {
+                css : {
+                    width: '100%',
+                    height: '100%',
+                }
+            }
+        });
+    });
+    $('[data-fancybox="f-publicidade"]').fancybox({});
+    $('.f-publicidade').fancybox({});
+
+    $('#carousel-acesso_rapido').owlCarousel({
+        loop: true,
+        lazyLoad: true,
+        lazyLoadEager: 2,
+        rtl: true,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        margin: 5,
+        stagePadding: 2,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false,
+            },
+            600: {
+                items: 3,
+                nav: false,
+            },
+            1000: {
+                items: 3,
+                nav: false,
+            }
+        }
+    });
+    $('.carousel-econucleos').owlCarousel({
+        loop: true,
+        lazyLoad: true,
+        lazyLoadEager: 2,
+        rtl: true,
+        autoplay: true,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        margin: 5,
+        stagePadding: 2,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false,
+            },
+            600: {
+                items: 2,
+                nav: false,
+            },
+            1000: {
+                items: 2,
+                nav: false,
+            }
+        }
+    });
+
+    $('[data-fancybox="images"]').fancybox({
+        buttons: [
+            'slideShow',
+            'share',
+            'zoom',
+            'fullScreen',
+            'close',
+            'thumb'
+        ],
+        thumbs: {
+            autoStart: false
+        },
+        beforeLoad: function(){
+            $('.enabled').hide();
+        },
+        afterClose: function(){
+            $('.enabled').show();
+        }
+    });
+    $('.collapsible').collapsible();
+    $('.tabs').tabs();
+
+    if ($('#pergunta').is(':visible')) {
+        $('.chips').material_chip();
+        $('#pergunta').select2({
+            language: 'pt-BR'
+        });
+    }
+    if ($('#local').is(':visible')) {
+        $('#local').select2({
+            language: 'pt-BR'
+        });
+    } else {
+        $('select').material_select();
+    }
+    $('#carousel-noticias').owlCarousel({
+        loop: true,
+        lazyLoadEager: 2,
+        lazyLoad: true,
+        rtl: false,
+        autoplay: true,
+        margin: 2,
+        stagePadding: 0,
+        autoplayTimeout: 8000,
+        autoplayHoverPause: true,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false,
+                loop: true
+            },
+            600: {
+                items: 1,
+                nav: false,
+                loop: true
+            },
+            1000: {
+                items: 1,
+                nav: false,
+                loop: true
+            }
+        }
+    });
+    $('.carousel-agendamento1').owlCarousel({
+        loop: true,
+        lazyLoadEager: 2,
+        lazyLoad: true,
+        rtl: false,
+        autoplay: true,
+        margin: 2,
+        stagePadding: 0,
+        autoplayTimeout: 8000,
+        autoplayHoverPause: true,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false,
+                loop: true
+            },
+            600: {
+                items: 1,
+                nav: false,
+                loop: true
+            },
+            1000: {
+                items: 1,
+                nav: false,
+                loop: true
+            }
+        }
+    });
+
+    $('.carousel-agendamento2').owlCarousel({
+        loop: true,
+        lazyLoadEager: 2,
+        lazyLoad: true,
+        rtl: false,
+        autoplay: true,
+        margin: 2,
+        stagePadding: 0,
+        autoplayTimeout: 8000,
+        autoplayHoverPause: true,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 2,
+                nav: false,
+                loop: true
+            },
+            600: {
+                items: 2,
+                nav: false,
+                loop: true
+            },
+            1000: {
+                items: 2,
+                nav: false,
+                loop: true
+            }
+        }
+    });
+
+    $('#carousel-covid').owlCarousel({
+        loop: true,
+        lazyLoadEager: 2,
+        lazyLoad: true,
+        rtl: false,
+        autoplay: true,
+        margin: 2,
+        stagePadding: 0,
+        autoplayTimeout: 8000,
+        autoplayHoverPause: true,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1,
+                nav: false,
+                loop: true
+            },
+            600: {
+                items: 1,
+                nav: false,
+                loop: true
+            },
+            1000: {
+                items: 1,
+                nav: false,
+                loop: true
+            }
+        }
+    });
+});
+
+$(document).on('click', '.fechar', function () {
+    $('.modal').modal('close');
+    $('.enabled').show();
+    $('.fechar').remove();
+});
+
+$('#telefone').bind('keyup paste', function () {
+    this.value = this.value.replace('/[^0-9]/g', '');
+});
+
+$(document).on("blur", "#telefone", function () {
+    $("#telefone").mask('(99)99999999?9');
+});
+
+$(document).on("blur", ".mask-telefone-input", function () {
+    $(".mask-telefone-input").mask('(99)99999999?9');
+});
+
+$(document).on("blur", ".mask-cpf-input", function () {
+    $(".mask-cpf-input").mask('999.999.999-99');
+});
+
+
+$(document).on("blur", ".mask-cnpj-input", function () {
+    $(".mask-cnpj-input").mask('99.999.999/9999-99');
+});
+
+function isEmail (email) {
+    var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(email);
+}
+
+function isEmpty (value) {
+    if(!Number.isInteger(value)){
+        return (value === undefined || value == null || value.trim().length == 0);
+    }
+}
+
+
+$(document).on("blur", "#telefone_contato-confirm", function () {
+    $("#telefone_contato-confirm").mask('(99)99999999?9');
+});
+
+
+$(document).on("blur", ".mask-cep", function () {
+    $("#cep_contato").mask('99999-999');
+});
+
+$(document).ready(function() {
+    // Initialize
+    var bLazy = new Blazy();
+});
+$(window).on('resize', function(){
+	var bLazy = new Blazy();
+});
+
+// Problema do jvochat ficar por cima do back-top
+$(document).on('click', '#jvlabelWrap', function() {
+    if ($('#back-top').is(':visible')) {
+        $('#back-top').hide();
+    }
+});
+
+$(document).on('click', '.closeIcon_1U', function() {
+    if ($(document).scrollTop() !== 0) {
+        $('#back-top').show();
+    }
+})
+
+$(document).on('click', '#equipe_suinfo', function(){
+    $('#carousel-equipe').owlCarousel({
+        loop: true,
+        lazyLoad: false,
+        lazyLoadEager: 2,
+        autoplay: true,
+        rtl: false,
+        autoplayTimeout: 5000,
+        autoplayHoverPause: true,
+        margin: 20,
+        stagePadding: 3,
+        responsiveClass: true,
+        responsive: {
+            0: {
+                items: 1
+            },
+            600: {
+                items: 2
+            },
+            1000: {
+                items: 3
+            }
+        }
+    });
+});
+$.fancybox.defaults.i18n.pt = {
+    CLOSE       : 'Fechar',
+    NEXT        : 'Próxima',
+    PREV        : 'Anterior',
+    ERROR       : 'Não foi possivel carregar tente novamente',
+    PLAY_START  : 'Iniciar Slide',
+    PLAY_STOP   : 'Pausar Slide',
+    FULL_SCREEN : 'Tela Cheia',
+    THUMBS      : 'Miniaturas',
+    DOWNLOAD    : 'Baixar',
+    SHARE       : 'Compartilhar',
+    ZOOM        : 'Zoom'
+};
+$.fancybox.defaults.lang = 'pt';
